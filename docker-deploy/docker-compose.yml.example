@@ -1,0 +1,46 @@
+# We're using version 3.7 of the Docker Compose file format
+version: "3.7"
+
+# Define services/containers
+services:
+  # MySQL container
+  mysqlmicrojobs:
+    # Use mysql:latest image (8.x)
+    image: mysql:latest
+    # Data folder
+    volumes:
+      - /home/a.borisov/microjobs/docker-microjobs/mysql-data/:/var/lib/mysql
+    #  - /home/a.borisov/microjobs/docker-microjobs/custom.cnf:/etc/my.cnf.d/custom.cnf
+    # Connect to "drfoxg-net" network, as defined below
+    networks:
+      - jobs-net
+    # Pass a list of environment variables to the container
+    environment:
+      MYSQL_ROOT_PASSWORD:
+      TZ: Europe/Moscow
+
+  # laravel
+  microjobs:
+    image: drfoxg/microjobs
+    build:
+      context: ../docker-microjobs
+    volumes:
+      - /home/a.borisov/microjobs/docker-microjobs/www/:/var/www/microjobs
+    networks:
+      - jobs-net
+    ports:
+      - "9888:80"
+    cap_add:
+       - ALL
+    environment:
+       XDEBUG_CLIENT_HOST: ${XDEBUG_CLIENT_HOST}
+       DOCKER_UID: ${DOCKER_UID}
+       SERVER_NAME: ${SERVER_NAME}
+       DEV_SERVER_NAME: ${DEV_SERVER_NAME}
+       INNODB_BUFFER_POOL_SIZE: ${INNODB_BUFFER_POOL_SIZE}
+       INNODB_LOG_BUFFER_SIZE: ${INNODB_LOG_BUFFER_SIZE}
+       #XDEBUG_CONFIG: remote_host=192.168.1.90
+
+# Define networks
+networks:
+  jobs-net:

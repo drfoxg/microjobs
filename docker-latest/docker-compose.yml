@@ -82,7 +82,7 @@ services:
     ports:
       - "9777:80"
     cap_add:
-       - ALL
+      - ALL
     environment:
        XDEBUG_CLIENT_HOST: ${XDEBUG_CLIENT_HOST}
        DOCKER_UID: ${DOCKER_UID}

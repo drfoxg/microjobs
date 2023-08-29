@@ -6,13 +6,7 @@ services:
       - ../docker-frontend/config/nginx/sites-dev:/etc/nginx/sites-enabled
 
   frontend:
-    command: sh -c "yarn && yarn dev"
-
-  mysqlmicrojobs:
-
-  phpmyadmin:
-
-  microjobs:
+    command: sh -c "yarn && yarn dev"  
 
   mailhog:
     container_name: mailhog_microjobs

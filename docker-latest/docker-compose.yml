@@ -10,7 +10,7 @@ services:
     working_dir: /var/www/html
     ports:
       - "80:80"
-      - "443:443"
+      - "447:447"
     volumes:
       - ../docker-frontend/www/:/var/www/html/frontend
       - ../docker-frontend/config/nginx/includes:/etc/nginx/includes:ro
@@ -22,13 +22,15 @@ services:
       - "24678:24678"
       - "9222:9222"
       - "5555:5555"
-    user: node
+    #user: node
     build:
       dockerfile: Dockerfile
       context: ../docker-frontend/config/frontend
     working_dir: /var/www/html/frontend
     volumes:
       - ../docker-frontend/www/frontend:/var/www/html/frontend
+    environment:
+      NODE_ENV: dev
     command: sh -c "node .output/server/index.mjs"
     stdin_open: true
     tty: true

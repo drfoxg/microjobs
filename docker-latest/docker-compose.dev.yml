@@ -7,6 +7,7 @@ services:
 
   frontend:
     command: sh -c "yarn && yarn dev"  
+    #command: sh -c "npm i && npm run dev"
 
   mailhog:
     container_name: mailhog_microjobs

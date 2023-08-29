@@ -1,0 +1,9 @@
+version: "3.7"
+services:
+  nginx:
+    volumes:
+      - ../docker-frontend/config/nginx/sites-prod:/etc/nginx/sites-enabled
+      - /etc/letsencrypt:/etc/letsencrypt
+
+  nuxt-app:
+    command: sh -c "node .output/server/index.mjs"

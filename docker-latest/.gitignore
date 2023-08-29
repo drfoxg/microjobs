@@ -1,0 +1,4 @@
+.env
+.idea
+.vscode/
+apps/nuxt-app/.env

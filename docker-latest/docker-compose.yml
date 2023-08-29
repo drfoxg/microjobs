@@ -3,20 +3,51 @@ version: "3.7"
 
 # Define services/containers
 services:
+  # nginx container
+  nginx:
+    # stable version on 29.08.2023
+    image: nginx:1.24 
+    working_dir: /var/www/html
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ../docker-frontend/www/:/var/www/html/frontend
+      - ../docker-frontend/config/nginx/includes:/etc/nginx/includes:ro
+      - ../docker-frontend/config/nginx/auth:/etc/nginx/auth
+      - ../docker-frontend/config/nginx/nginx.conf:/etc/nginx/nginx.conf
+  # nuxt.js container
+  frontend:
+    ports:
+      - "24678:24678"
+      - "9222:9222"
+      - "5555:5555"
+    user: node
+    build:
+      dockerfile: Dockerfile
+      context: ../docker-frontend/config/frontend
+    working_dir: /var/www/html/frontend
+    volumes:
+      - ../docker-frontend/www/frontend:/var/www/html/frontend
+    command: sh -c "node .output/server/index.mjs"
+    stdin_open: true
+    tty: true
+    networks:
+      - jobs-net
   # MySQL container
   mysqlmicrojobs:
     # Use mysql:latest image (8.x)
     image: mysql:8.0.34
     # Data folder
     volumes:
-      - /home/rustmod/microjobs/docker-microjobs/mysql-data/:/var/lib/mysql
+      - ../docker-microjobs/mysql-data/:/var/lib/mysql
     #  - /home/rustmod/microjobs/docker-microjobs/custom.cnf:/etc/my.cnf.d/custom.cnf
-    # Connect to "drfoxg-net" network, as defined below
+    # Connect to "jobs-net" network, as defined below
     networks:
       - jobs-net
     # Pass a list of environment variables to the container
     environment:
-      MYSQL_ROOT_PASSWORD:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       TZ: Europe/Moscow
 
   # phpMyAdmin container
@@ -38,14 +69,14 @@ services:
     # Wait for "mysql" container to start first
     depends_on:
       - mysqlmicrojobs
-      
+
   # laravel v9
   microjobs:
     image: drfoxg/microjobs
     build:
       context: ../docker-microjobs
     volumes:
-      - /home/rustmod/microjobs/docker-microjobs/www/:/var/www/microjobs
+      - ../docker-microjobs/www/:/var/www/microjobs
     networks:
       - jobs-net
     ports:

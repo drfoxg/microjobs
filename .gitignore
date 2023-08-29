@@ -11,5 +11,4 @@ nbdist/
 .nb-gradle/
 docker-deploy/docker-compose.yml
 docker-deploy/.env
-docker-latest/docker-compose.yml
 docker-latest/.env

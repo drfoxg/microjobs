@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>Hello World!</h1>
+        <h1>Биржа микрозаданий</h1>
         <!-- Markup shared across all pages, ex: NavBar -->
         <NuxtPage />
     </div>

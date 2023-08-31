@@ -5,9 +5,29 @@
     "dev": "nuxi dev",
     "build": "nuxi build",
     "generate": "nuxi generate",
-    "start": "nuxi preview"
+    "preview": "nuxi preview",
+    "start": "nuxi start"
   },
   "devDependencies": {
-    "nuxt": "^3.7.0"
+    "autoprefixer": "~10.4.14",
+    "fibers": "~5.0.3",
+    "nuxt": "~3.7.0",
+    "nuxt-simple-robots": "~3.1.2",
+    "postcss": "~8.4.21",
+    "postcss-loader": "~7.1.0",
+    "sass": "~1.60.0",
+    "sass-loader": "~13.2.2"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.4.2",
+    "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-brands-svg-icons": "^6.4.2",
+    "@fortawesome/free-regular-svg-icons": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/vue-fontawesome": "^3.0.3",
+    "@popperjs/core": "~2.11.7",
+    "bootstrap": "~5.2.3",
+    "vue-fontawesome": "^0.0.2",
+    "webpack": "~5.0.0"
   }
 }

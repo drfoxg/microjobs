@@ -1,14 +1,25 @@
 <template>
-    <!-- <main class="container-fluid flex-shrink-0 default"> -->
-    <main class="flex-shrink-0">
-        <div class="container">
-            Some default layout shared across all pages
-            <slot />
-        </div>
-    </main>
+    <div>
+        <TheNavigation />
+        <main class="flex-shrink-0 main-background">
+            <div class="container container-img">
+                <slot />
+            </div>
+        </main>
+        <TheMainSecondBlock />
+        <TheFooter />
+    </div>
 </template>
 
 <style scoped>
+.main-background {
+    background-color: #b8e39e87;
+    height: 450px;
+}
+
+.container-img {
+    background: url(~/assets/img/typo.png) no-repeat left 50%;
+}
 .default {
     border: 1px solid #b9e39e;
     padding: 1rem;

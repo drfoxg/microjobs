@@ -10,8 +10,6 @@ useHead({
 </script>
 
 <template>
-    <TheNavigation />
-
     <!-- 
         <div class="bg-theme1 p-3">
             <h1 class="text-white d-inline-block">
@@ -22,11 +20,11 @@ useHead({
             </div>
         </div>
         -->
+
     <!-- Markup shared across all pages, ex: NavBar -->
     <NuxtLayout>
         <NuxtPage />
     </NuxtLayout>
-    <TheFooter />
 </template>
 
 <style>

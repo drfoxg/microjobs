@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="d-flex flex-column h-100">
         <TheNavigation />
         <main class="flex-shrink-0 main-background">
             <div class="container container-img">
@@ -7,6 +7,7 @@
             </div>
         </main>
         <TheMainSecondBlock />
+        <TheMainThirdBlock />
         <TheFooter />
     </div>
 </template>

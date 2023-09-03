@@ -3,103 +3,105 @@ version: "3.7"
 
 # Define services/containers
 services:
-  # MySQL container
-  mysqlmicrojobs:
-    # Use mysql:latest image (8.x)
-    image: mysql:8.0.34
-    # Data folder
-    volumes:
-      - ../docker-microjobs/mysql-data/:/var/lib/mysql
-    #  - /home/rustmod/microjobs/docker-microjobs/custom.cnf:/etc/my.cnf.d/custom.cnf
-    # Connect to "jobs-net" network, as defined below
-    networks:
-      - jobs-net
-    # Pass a list of environment variables to the container
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      TZ: Europe/Moscow
+    # MySQL container
+    mysqlmicrojobs:
+        # Use mysql:latest image (8.x)
+        image: mysql:8.0.34
+        # Data folder
+        volumes:
+            - ../docker-microjobs/mysql-data/:/var/lib/mysql
+        #  - /home/rustmod/microjobs/docker-microjobs/custom.cnf:/etc/my.cnf.d/custom.cnf
+        # Connect to "jobs-net" network, as defined below
+        networks:
+            - jobs-net
+        # Pass a list of environment variables to the container
+        environment:
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+            TZ: Europe/Moscow
 
-  # phpMyAdmin container
-  phpmyadmin:
-    # Use phpmyadmin/phpmyadmin:latest image
-    image: phpmyadmin/phpmyadmin:latest
-    # Connect to "drfoxg-net" network, as defined below
-    networks:
-      - jobs-net
-    # Map port 8082 on the host to port 80 inside the container
-    # Syntax is: "HOST_PORT:CONTAINER_PORT"
-    ports:
-      - "8077:80"
-    # Pass a list of environment variables to the container
-    environment:
-      PMA_HOST: mysqlmicrojobs
-      UPLOAD_LIMIT: 256M
-      MAX_EXECUTION_TIME: 3000
-    # Wait for "mysql" container to start first
-    depends_on:
-      - mysqlmicrojobs
+    # phpMyAdmin container
+    phpmyadmin:
+        # Use phpmyadmin/phpmyadmin:latest image
+        image: phpmyadmin/phpmyadmin:latest
+        # Connect to "drfoxg-net" network, as defined below
+        networks:
+            - jobs-net
+        # Map port 8082 on the host to port 80 inside the container
+        # Syntax is: "HOST_PORT:CONTAINER_PORT"
+        ports:
+            - "8077:80"
+        # Pass a list of environment variables to the container
+        environment:
+            PMA_HOST: mysqlmicrojobs
+            UPLOAD_LIMIT: 256M
+            MAX_EXECUTION_TIME: 3000
+        # Wait for "mysql" container to start first
+        depends_on:
+            - mysqlmicrojobs
 
-  # laravel v9
-  microjobs:
-    image: drfoxg/microjobs
-    build:
-      context: ../docker-microjobs
-    volumes:
-      - ../docker-microjobs/www/:/var/www/microjobs
-    networks:
-      - jobs-net
-    ports:
-      - "9777:80"
-    cap_add:
-      - ALL
-    environment:
-       XDEBUG_CLIENT_HOST: ${XDEBUG_CLIENT_HOST}
-       DOCKER_UID: ${DOCKER_UID}
-       SERVER_NAME: ${SERVER_NAME}
-       DEV_SERVER_NAME: ${DEV_SERVER_NAME}
-       INNODB_BUFFER_POOL_SIZE: ${INNODB_BUFFER_POOL_SIZE}
-       INNODB_LOG_BUFFER_SIZE: ${INNODB_LOG_BUFFER_SIZE}
-       #XDEBUG_CONFIG: remote_host=192.168.1.90
- 
-  # nginx container
-  nginx:
-    # stable version on 29.08.2023
-    image: drfoxg/frontend
-    build:
-      context: ../docker-frontend/config/nginx
-    working_dir: /var/www/html
-    ports:
-      - "80:80"
-      - "447:447"
-    volumes:
-      - ../docker-frontend/www:/var/www/html
-      - ../docker-frontend/config/nginx/includes:/etc/nginx/includes:ro
-      - ../docker-frontend/config/nginx/auth:/etc/nginx/auth      
-    depends_on:
-      - frontend
-    networks:
-      - jobs-net      
+    # laravel v9
+    microjobs:
+        image: drfoxg/microjobs
+        build:
+            context: ../docker-microjobs
+        volumes:
+            - ../docker-microjobs/www/:/var/www/microjobs
+        networks:
+            - jobs-net
+        ports:
+            - "9777:80"
+        cap_add:
+            - ALL
+        environment:
+            XDEBUG_CLIENT_HOST: ${XDEBUG_CLIENT_HOST}
+            DOCKER_UID: ${DOCKER_UID}
+            SERVER_NAME: ${SERVER_NAME}
+            DEV_SERVER_NAME: ${DEV_SERVER_NAME}
+            INNODB_BUFFER_POOL_SIZE: ${INNODB_BUFFER_POOL_SIZE}
+            INNODB_LOG_BUFFER_SIZE: ${INNODB_LOG_BUFFER_SIZE}
+            #XDEBUG_CONFIG: remote_host=192.168.1.90
 
-  # nuxt.js container
-  frontend:
-    ports:
-      - "24678:24678"
-      - "9222:9222"
-      - "5555:5555"
-    #user: node
-    build:
-      dockerfile: Dockerfile
-      context: ../docker-frontend/config/frontend
-    working_dir: /var/www/html/frontend
-    volumes:
-      - ../docker-frontend/www/frontend:/var/www/html/frontend
-    environment:
-      NODE_ENV: development
-    command: sh -c "node .output/server/index.mjs"
-    stdin_open: true
-    tty: true
-    networks:
-      - jobs-net
+    # nginx container
+    nginx:
+        # stable version on 29.08.2023
+        image: drfoxg/frontend
+        build:
+            context: ../docker-frontend/config/nginx
+        working_dir: /var/www/html
+        ports:
+            - "80:80"
+            - "447:447"
+        volumes:
+            - ../docker-frontend/www:/var/www/html
+            - ../docker-frontend/config/nginx/includes:/etc/nginx/includes:ro
+            - ../docker-frontend/config/nginx/auth:/etc/nginx/auth
+        depends_on:
+            - frontend
+        networks:
+            - jobs-net
+
+    # nuxt.js container
+    frontend:
+        ports:
+            - "24678:24678"
+            - "9222:9222"
+            - "5555:5555"
+        #user: node
+        build:
+            dockerfile: Dockerfile
+            context: ../docker-frontend/config/frontend
+        working_dir: /var/www/html/frontend
+        volumes:
+            - ../docker-frontend/www/frontend:/var/www/html/frontend
+        tmpfs:
+            - /tmp
+        environment:
+            NODE_ENV: development
+        command: sh -c "node .output/server/index.mjs"
+        stdin_open: true
+        tty: true
+        networks:
+            - jobs-net
 # Define networks
 networks:
-  jobs-net:
+    jobs-net:

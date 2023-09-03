@@ -5,19 +5,15 @@
 export default defineNuxtConfig({
     // My Nuxt config
     site: {
-        url: 'http://sulphur.fun',
+        url: "http://sulphur.fun",
     },
 
-    modules: [
-        'nuxt-simple-robots',
-    ],
+    modules: ["nuxt-simple-robots"],
 
-    plugins: [
-        { src: '~/plugins/fontawesome.ts' },
-    ],
+    plugins: [{ src: "~/plugins/fontawesome.ts" }],
 
     css: [
-        '~/assets/scss/main.scss',
-        '@fortawesome/fontawesome-svg-core/styles.css',
-    ]
-})
+        "~/assets/scss/main.scss",
+        "@fortawesome/fontawesome-svg-core/styles.css",
+    ],
+});

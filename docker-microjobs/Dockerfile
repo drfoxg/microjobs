@@ -92,6 +92,9 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 #	&& composer 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 
+RUN composer global require laravel/installer && \
+    echo 'export PATH="~/.config/composer/vendor/bin:$PATH"' >>  ~/.bashrc
+
 # apache vhost
 RUN cd /var/www \
  && mkdir -p -m 775 /var/www/microjobs \

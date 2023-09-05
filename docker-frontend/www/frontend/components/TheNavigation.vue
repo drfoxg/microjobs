@@ -1,5 +1,5 @@
 <template>
-    <nav class="conatiner-fluid text-bg-success">
+    <nav class="conatiner-fluid text-bg-dark">
         <div
             class="container d-flex text-uppercase justify-content-center align-items-center p-3"
         >
@@ -21,10 +21,10 @@
             <NuxtLink class="text-white text-decoration-none m-2" to="#"
                 >Контакты</NuxtLink
             >
-            <NuxtLink class="text-dark text-decoration-none m-2" to="/signup"
+            <NuxtLink class="text-white text-decoration-none m-2" to="/signup"
                 >Регистрация</NuxtLink
             >
-            <NuxtLink class="text-dark text-decoration-none m-2" to="/login"
+            <NuxtLink class="text-white text-decoration-none m-2" to="/login"
                 >Вход</NuxtLink
             >
         </div>

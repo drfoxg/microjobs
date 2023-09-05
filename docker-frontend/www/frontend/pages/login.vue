@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 definePageMeta({
     layout: "loginregister",
 });
@@ -8,13 +8,33 @@ useHead({
         class: "text-center",
     },
 });
+
+const form = ref({
+    email: "drfoxg@gmail.com",
+    password: "mlsi1941",
+});
+
+async function handelLogin() {
+    await useApiFetch("/sanctum/csrf-cookie", {
+        credentials: "include",
+    });
+
+    await useApiFetch("/login", {
+        method: "POST",
+        body: form.value,
+    });
+
+    const { data } = await useApiFetch("/api/user");
+
+    console.log(data);
+}
 </script>
 
 <template>
     <div
         class="container d-flex justify-content-center align-items-center h-100"
     >
-        <form class="form-signin">
+        <form class="form-signin" @submit.prevent="handelLogin">
             <img
                 class="mb-4"
                 src="~/assets/img/iam.svg"
@@ -31,6 +51,7 @@ useHead({
                     class="form-control"
                     id="floatingInput"
                     placeholder="name@example.com"
+                    v-model="form.email"
                 />
                 <label for="floatingInput">Ваш e-mail</label>
             </div>
@@ -41,6 +62,7 @@ useHead({
                     class="form-control"
                     id="floatingPassword"
                     placeholder="Password"
+                    v-model="form.password"
                 />
                 <label for="floatingPassword">Пароль</label>
             </div>
@@ -68,9 +90,5 @@ useHead({
         </form>
     </div>
 </template>
-
-<script>
-export default {};
-</script>
 
 <style scoped></style>

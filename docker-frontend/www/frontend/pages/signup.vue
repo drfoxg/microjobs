@@ -1,6 +1,9 @@
-<script setup>
+<script lang="ts" setup>
+import { useAuthStore } from "~/stores/useAuthStore";
+
 definePageMeta({
     layout: "loginregister",
+    middleware: ["guest"],
 });
 
 useHead({
@@ -8,13 +11,35 @@ useHead({
         class: "text-center",
     },
 });
+
+const form = ref({
+    name: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
+});
+
+const auth = useAuthStore();
+
+async function handelSignup() {
+    if (auth.isLoggedIn) {
+        navigateTo("/select-role");
+    }
+
+    const { error } = await auth.signup(form.value);
+    console.log(error);
+
+    if (!error.value) {
+        navigateTo("/");
+    }
+}
 </script>
 
 <template>
     <div
         class="container d-flex justify-content-center align-items-center h-100"
     >
-        <form class="form-signin">
+        <form class="form-signin" @submit.prevent="handelSignup">
             <img
                 class="mb-4"
                 src="~/assets/img/iam.svg"
@@ -26,11 +51,23 @@ useHead({
 
             <div class="form-floating">
                 <input
+                    name="name"
+                    type="text"
+                    class="form-control"
+                    id="floatingInputName"
+                    placeholder="Иванов Иван Иванович"
+                    v-model="form.name"
+                />
+                <label for="floatingInputName">Ваше имя</label>
+            </div>
+            <div class="form-floating">
+                <input
                     name="email"
                     type="email"
-                    class="form-control"
+                    class="form-control form-control-email-in-center"
                     id="floatingInput"
                     placeholder="name@example.com"
+                    v-model="form.email"
                 />
                 <label for="floatingInput">Ваш e-mail</label>
             </div>
@@ -41,6 +78,7 @@ useHead({
                     class="form-control form-control-in-center"
                     id="floatingPassword"
                     placeholder="Пароль"
+                    v-model="form.password"
                 />
                 <label for="floatingPassword">Пароль</label>
             </div>
@@ -51,6 +89,7 @@ useHead({
                     class="form-control"
                     id="floatingPasswordRepeat"
                     placeholder="Повторите пароль"
+                    v-model="form.password_confirmation"
                 />
                 <label for="floatingPasswordRepeat">Повторите пароль</label>
             </div>
@@ -58,7 +97,7 @@ useHead({
             <div class="checkbox mb-3">
                 <label>
                     <input name="i_agree" type="checkbox" value="i_agree" />
-                    Согласен с правилами обработки персональных данных
+                    Принять правила обработки персональных данных
                 </label>
             </div>
             <button
@@ -74,9 +113,5 @@ useHead({
         </form>
     </div>
 </template>
-
-<script>
-export default {};
-</script>
 
 <style scoped></style>

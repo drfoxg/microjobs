@@ -1,3 +1,5 @@
+<script setup lang="ts"></script>
+
 <template>
     <nav class="conatiner-fluid text-bg-dark">
         <div

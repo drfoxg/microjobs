@@ -8,7 +8,10 @@ export default defineNuxtConfig({
         url: "http://sulphur.fun",
     },
 
-    modules: ["nuxt-simple-robots"],
+    modules: [
+        'nuxt-simple-robots',
+        '@pinia/nuxt',
+    ],
 
     plugins: [{ src: "~/plugins/fontawesome.ts" }],
 
@@ -16,4 +19,12 @@ export default defineNuxtConfig({
         "~/assets/scss/main.scss",
         "@fortawesome/fontawesome-svg-core/styles.css",
     ],
+
+    pinia: {
+        autoImports: [
+            // automatically imports `defineStore`
+            'defineStore', // import { defineStore } from 'pinia'
+            ['defineStore', 'definePiniaStore'], // import { defineStore as definePiniaStore } from 'pinia'
+        ],
+    },
 });

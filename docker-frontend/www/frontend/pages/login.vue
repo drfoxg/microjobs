@@ -1,6 +1,10 @@
 <script lang="ts" setup>
+import { useAuthStore } from "~/stores/useAuthStore";
+import { definePageMeta } from "#imports";
+
 definePageMeta({
     layout: "loginregister",
+    middleware: ["guest"],
 });
 
 useHead({
@@ -14,19 +18,19 @@ const form = ref({
     password: "mlsi1941",
 });
 
+const auth = useAuthStore();
+
 async function handelLogin() {
-    await useApiFetch("/sanctum/csrf-cookie", {
-        credentials: "include",
-    });
+    if (auth.isLoggedIn) {
+        navigateTo("/select-role");
+    }
 
-    await useApiFetch("/login", {
-        method: "POST",
-        body: form.value,
-    });
+    const { error } = await auth.login(form.value);
+    console.log(error);
 
-    const { data } = await useApiFetch("/api/user");
-
-    console.log(data);
+    if (!error.value) {
+        navigateTo("/select-role");
+    }
 }
 </script>
 

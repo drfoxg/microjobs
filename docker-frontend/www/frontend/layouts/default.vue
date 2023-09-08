@@ -16,12 +16,12 @@ async function handleDashborad() {
     <div class="d-flex flex-column h-100">
         <TheNavigation />
         <button class="mt-1 mb-1" v-if="auth.isLoggedIn" @click="handleLogout">
-            Выход
+            Выход(Logout)
         </button>
         <button class="mb-1" v-if="auth.isLoggedIn" @click="handleDashborad">
-            Панель управления
+            Панель управления(Dashboard)
         </button>
-        <div class="container">
+        <div class="container" v-if="auth.isLoggedIn">
             Пользователь:
             <pre>{{ auth.user }}</pre>
         </div>

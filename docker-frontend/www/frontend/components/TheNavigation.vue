@@ -24,10 +24,10 @@
                 >Контакты</NuxtLink
             >
             <NuxtLink class="text-white text-decoration-none m-2" to="/signup"
-                >Регистрация</NuxtLink
+                >Регистрация(signup)</NuxtLink
             >
             <NuxtLink class="text-white text-decoration-none m-2" to="/login"
-                >Вход</NuxtLink
+                >Вход(login)</NuxtLink
             >
         </div>
     </nav>

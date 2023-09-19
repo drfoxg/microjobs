@@ -13,9 +13,15 @@ useHead({
     },
 });
 
+/*
 const form = ref({
     email: "gop@mail.ru",
     password: "12345678",
+});
+*/
+const form = ref({
+    email: "drfoxg@gmail.com",
+    password: "wow1945wow",
 });
 
 const auth = useAuthStore();

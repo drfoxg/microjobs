@@ -1,9 +1,10 @@
 import type { UseFetchOptions } from "nuxt/app";
 
-export function useApiFetch<T>(path: string, options: UseFetchOptions<T> = {}, refreshKey?: string) {
+export function useApiFetchPut<T>(path: string,  formData: URLSearchParams, options: UseFetchOptions<T> = {}, refreshKey?: string) {
     let headers: any = {
         accept: "application/json",
         referer: "http://sulphur.fun",
+        "Cache-Control": "no-cache",
     };
 
     const token = useCookie("XSRF-TOKEN");
@@ -20,11 +21,12 @@ export function useApiFetch<T>(path: string, options: UseFetchOptions<T> = {}, r
         };
     }
 
-    console.log("refreshKey:" + refreshKey);
-    console.log("path:" + path);
+    console.log(formData);
+
 
     return useFetch("http://sulphur.fun:9777" + path, {
         key: refreshKey,
+        body: formData,
         credentials: "include",
         watch: false,
         ...options,
@@ -35,7 +37,6 @@ export function useApiFetch<T>(path: string, options: UseFetchOptions<T> = {}, r
         onResponse({request, response, options}) {
 
             console.log("status:" + response.status);
-            console.log("full path:" + "http://sulphur.fun:9777" + path);
 
             if (response.status === 204) {
                 console.log("status 204 is fire");
